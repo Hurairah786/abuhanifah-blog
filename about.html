@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About Abu Hanifah Blog." />
+  <title>About | Abu Hanifah Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="index.html" class="logo">abuhanifah<span>.blog</span></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html" class="active">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <span class="kicker">About</span>
+        <h1>The Author</h1>
+        <p class="subtitle">A little about who I am and why I write.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="about-body">
+        <div class="about-prose">
+          <!-- ── EDIT YOUR BIO HERE ── -->
+          <p>
+            Write your introduction here. Who are you, what is your background, and what drives your writing?
+          </p>
+          <p>
+            This blog exists to share translations, reflections and Islamic resources — written with the intention of making knowledge accessible, accurate, and grounded in traditional scholarship.
+          </p>
+          <p>
+            If you have any questions or would like to get in touch, reach out via any of the social links on this page.
+          </p>
+          <!-- ── END BIO ── -->
+        </div>
+
+        <aside class="about-sidebar">
+          <div class="sidebar-section">
+            <span class="sidebar-heading">Find me online</span>
+            <div class="social-list">
+              <a class="social-item" href="https://x.com/1_AbuHurairah" target="_blank" rel="noopener noreferrer">
+                <span class="platform">X / Twitter</span>
+                <span class="handle">@1_AbuHurairah</span>
+              </a>
+              <a class="social-item" href="https://t.me/AbuHurairah_0" target="_blank" rel="noopener noreferrer">
+                <span class="platform">Telegram</span>
+                <span class="handle">@AbuHurairah_0</span>
+              </a>
+              <a class="social-item" href="https://www.youtube.com/@1_AbuHurairah" target="_blank" rel="noopener noreferrer">
+                <span class="platform">YouTube</span>
+                <span class="handle">Abu-Hurairah</span>
+              </a>
+              <a class="social-item" href="#" target="_blank" rel="noopener noreferrer">
+                <span class="platform">LinkedIn</span>
+                <span class="handle">Your Profile</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <span class="sidebar-heading">Topics covered</span>
+            <div class="sidebar-tag-list" id="about-tags"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <p>© <span id="year"></span> abuhanifah.blog</p>
+      <a href="blog.html">Browse Articles</a>
+    </div>
+  </footer>
+
+  <script src="posts.js"></script>
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('about-tags').innerHTML = TAGS.map(t =>
+      `<a href="blog.html?tag=${t}" class="tag">${t}</a>`
+    ).join('');
+  </script>
+</body>
+</html>

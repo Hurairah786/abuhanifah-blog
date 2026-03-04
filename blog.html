@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Articles and blog posts from Abu Hanifah Blog." />
-  <title>Blog Articles | Abu Hanifah</title>
+  <meta name="description" content="All articles — Abu Hanifah Blog." />
+  <title>Blog | Abu Hanifah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,67 +17,32 @@
       <nav class="nav">
         <a href="index.html">Home</a>
         <a href="blog.html" class="active">Blog</a>
-        <a href="index.html#socials">Socials</a>
+        <a href="about.html">About</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="page-hero">
+    <div class="page-hero">
       <div class="container">
-        <p class="eyebrow">Articles</p>
+        <span class="kicker">Articles</span>
         <h1>Blog & Reflections</h1>
-        <p class="lead narrow">Translations, thoughts, reflections and lessons</p>
+        <p class="subtitle">Translations, thoughts, reflections and lessons</p>
       </div>
-    </section>
+    </div>
 
-    <section class="section">
+    <section>
       <div class="container">
-        <div class="blog-grid">
-          <article class="post-card">
-            <span class="post-tag">Fiqh</span>
-            <h2>Is abandoning salah kufr?</h2>
-            <p></p>
-            <a href="article1.html" class="text-link">Read article →</a>
-          </article>
-
-          <article class="post-card">
-            <span class="post-tag">Translation</span>
-            <h2>Advice on Seeking Knowledge</h2>
-            <p>Imam Abu Hanifah (رح)’s Advice to his Student Imam Abu Yusuf (رح)</p>
-            <a href="article2.html" class="text-link">Read article →</a>
-          </article>
-          
-          <!--UNUSED
-          <article class="post-card">
-            <span class="post-tag">Personal</span>
-            <h2>.</h2>
-            <p>.</p>
-            <a href="#" class="text-link">Read article →</a>
-          </article>
-
-          <article class="post-card">
-            <span class="post-tag">.</span>
-            <h2>.</h2>
-            <p>.</p>
-            <a href="#" class="text-link">Read article →</a>
-          </article>
-
-          
-          <article class="post-card">
-            <span class="post-tag">.</span>
-            <h2>.</h2>
-            <p>.</p>
-            <a href="#" class="text-link">Read article →</a>
-          </article>
-
-          <article class="post-card">
-            <span class="post-tag">.</span>
-            <h2>.</h2>
-            <p>.</p>
-            <a href="#" class="text-link">Read article →</a>
-          </article>
-          UP TIL HERE-->
+        <div class="content-layout">
+          <div class="posts-column">
+            <div class="posts-filter-bar">
+              <span class="filter-label">Filter</span>
+              <div id="filter-tags"></div>
+              <span class="posts-count" id="blog-count"></span>
+            </div>
+            <div class="post-list" id="blog-post-list"></div>
+          </div>
+          <aside class="sidebar" id="blog-sidebar"></aside>
         </div>
       </div>
     </section>
@@ -86,10 +51,100 @@
   <footer class="site-footer">
     <div class="container footer-wrap">
       <p>© <span id="year"></span> abuhanifah.blog</p>
-      <a href="index.html">Back Home</a>
+      <a href="index.html">Home</a>
     </div>
   </footer>
 
+  <script src="posts.js"></script>
   <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Read tag from URL ?tag=xxx
+    const params = new URLSearchParams(window.location.search);
+    let activeTag = params.get('tag') || 'all';
+
+    function renderPosts(tag) {
+      const filtered = tag === 'all' ? [...POSTS].reverse() : [...POSTS].reverse().filter(p => p.tags.includes(tag));
+      const countEl = document.getElementById('blog-count');
+      countEl.textContent = `${filtered.length} article${filtered.length !== 1 ? 's' : ''}`;
+
+      const listEl = document.getElementById('blog-post-list');
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<p class="no-results">No articles tagged "${tag}" yet.</p>`;
+        return;
+      }
+      listEl.innerHTML = filtered.map(p => `
+        <div class="post-item">
+          <div class="post-item-left">
+            <div class="post-item-tags">${p.tags.map(t => `<span class="tag" style="cursor:default;">${t}</span>`).join('')}</div>
+            <div class="post-item-title"><a href="${p.file}">${p.title}</a></div>
+            <div class="post-item-excerpt">${p.excerpt}</div>
+            <div class="post-item-meta"><span>${p.date}</span><span>${p.readTime} read</span></div>
+          </div>
+          <div><a href="${p.file}" class="read-arrow" title="Read">→</a></div>
+        </div>
+      `).join('');
+    }
+
+    function renderFilterTags(active) {
+      const container = document.getElementById('filter-tags');
+      const allTags = ['all', ...TAGS];
+      container.innerHTML = allTags.map(t =>
+        `<button class="tag${t === 'all' ? ' tag-all' : ''}${t === active ? ' active' : ''}" data-tag="${t}">${t === 'all' ? 'All' : t}</button>`
+      ).join('');
+      container.querySelectorAll('.tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeTag = btn.dataset.tag;
+          renderFilterTags(activeTag);
+          renderPosts(activeTag);
+          // update URL without reload
+          const url = new URL(window.location);
+          if (activeTag === 'all') url.searchParams.delete('tag');
+          else url.searchParams.set('tag', activeTag);
+          window.history.replaceState({}, '', url);
+        });
+      });
+    }
+
+    // Sidebar
+    document.getElementById('blog-sidebar').innerHTML = `
+      <div class="sidebar-section sidebar-about">
+        <span class="sidebar-heading">About this blog</span>
+        <p>Translations, reflections and Islamic resources. Written with care, grounded in scholarship.</p>
+        <a href="about.html">About the author →</a>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-heading">All Topics</span>
+        <div class="sidebar-tag-list">
+          ${TAGS.map(t => `<button class="tag sidebar-tag-btn" data-tag="${t}">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-heading">Recent</span>
+        <div class="sidebar-recent">
+          ${[...POSTS].reverse().slice(0, 5).map(p => `
+            <div class="sidebar-recent-item">
+              <a href="${p.file}">${p.title}</a>
+              <div class="meta">${p.date}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    // Sidebar tag buttons sync with main filter
+    document.querySelectorAll('.sidebar-tag-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeTag = btn.dataset.tag;
+        renderFilterTags(activeTag);
+        renderPosts(activeTag);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    renderFilterTags(activeTag);
+    renderPosts(activeTag);
+  </script>
 </body>
 </html>

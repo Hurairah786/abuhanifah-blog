@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Abu Hanifah Blog - reflections, articles, and social links." />
+  <meta name="description" content="Abu Hanifah Blog — Translations, reflections, and Islamic resources." />
   <title>Abu Hanifah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,94 +17,43 @@
       <nav class="nav">
         <a href="index.html" class="active">Home</a>
         <a href="blog.html">Blog</a>
-        <a href="#socials">Socials</a>
+        <a href="about.html">About</a>
       </nav>
     </div>
   </header>
 
-  <!--Main Title Section-->
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <p class="eyebrow">@1_abuhurairah</p>
-          <h1>Abu Hanifah Blog</h1>
-          <p class="lead">
-            Translations, articles and resources.
-          </p>
-          <div class="hero-actions">
-            <a href="blog.html" class="btn btn-primary">Read Articles</a>
-            <a href="#socials" class="btn btn-secondary">View Socials</a>
+    <section class="home-hero">
+      <div class="container">
+        <div class="home-hero-inner">
+          <div class="home-hero-left">
+            <span class="kicker">@1_abuhurairah</span>
+            <h1>Abu Hanifah<br>Blog</h1>
+            <p class="home-tagline">Translations, articles and resources on Islam — written with care and grounded in scholarship.</p>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <a href="blog.html" class="btn btn-primary">Browse Articles</a>
+              <a href="about.html" class="btn btn-ghost">About</a>
+            </div>
           </div>
-        </div>
-        <!--Featured Article Section-->
-        <div class="hero-card">
-          <h2>Latest Post</h2>
-          <p class="post-tag">Featured article</p>
-          <h3>Advice on Seeking Knowledge</h3>
-          <p>
-            A Translation of Imam Abu Hanifah's advice to his student Imam Abu Yusuf
-          </p>
-          <a href="blog.html" class="text-link">Go to blog →</a>
+          <div class="home-hero-right" id="latest-post-block">
+            <!-- injected by JS -->
+          </div>
         </div>
       </div>
     </section>
 
-    <!--About Section-->
-    <section class="section">
+    <!-- Recent posts -->
+    <section>
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow"></p>
-          <h2></h2>
-          <p>
-            
-          </p>
-        </div>
-
-        <!--Featured Section
-        <div class="feature-grid">
-          <article class="card">
-            <h3></h3>
-            <p></p>
-          </article>
-          <article class="card">
-            <h3></h3>
-            <p></p>
-          </article>
-          <article class="card">
-            <h3></h3>
-            <p></p>
-          </article>
-        </div>
-      </div>
-    </section>-->
-
-    <!--Socials section-->
-    <section class="section section-alt" id="socials">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Socials</p>
-          <h2>Follow my socials</h2>
-          <p></p>
-        </div>
-
-        <div class="social-grid">
-          <a class="social-card" href="https://x.com/1_AbuHurairah" target="_blank" rel="noopener noreferrer">
-            <span class="social-label">X / Twitter</span>
-            <strong>@1_AbuHurairah</strong>
-          </a>
-          <a class="social-card" href="https://t.me/AbuHurairah_0" target="_blank" rel="noopener noreferrer">
-            <span class="social-label">Telegram</span>
-            <strong>@AbuHurairah_0</strong>
-          </a>
-          <a class="social-card" href="https://www.youtube.com/@1_AbuHurairah" target="_blank" rel="noopener noreferrer">
-            <span class="social-label">YouTube</span>
-            <strong>Abu-Hurairah</strong>
-          </a>
-          <a class="social-card" href="#" target="_blank" rel="noopener noreferrer">
-            <span class="social-label">LinkedIn</span>
-            <strong>Your Profile</strong>
-          </a>
+        <div class="content-layout">
+          <div class="posts-column">
+            <div class="posts-filter-bar">
+              <span class="filter-label">Recent</span>
+              <span class="posts-count" id="home-count"></span>
+            </div>
+            <div class="post-list" id="home-post-list"></div>
+          </div>
+          <aside class="sidebar" id="home-sidebar"></aside>
         </div>
       </div>
     </section>
@@ -113,10 +62,57 @@
   <footer class="site-footer">
     <div class="container footer-wrap">
       <p>© <span id="year"></span> abuhanifah.blog</p>
-      <a href="blog.html">Browse Articles</a>
+      <a href="blog.html">All Articles</a>
     </div>
   </footer>
 
+  <script src="posts.js"></script>
   <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Latest post
+    const latest = POSTS[POSTS.length - 1];
+    document.getElementById('latest-post-block').innerHTML = `
+      <span class="latest-label">Latest Post</span>
+      <div class="latest-title"><a href="${latest.file}" style="color:inherit;">${latest.title}</a></div>
+      <div class="latest-excerpt">${latest.excerpt}</div>
+      <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.85rem;">
+        ${latest.tags.map(t => `<span class="tag" style="cursor:default; pointer-events:none;">${t}</span>`).join('')}
+      </div>
+      <a href="${latest.file}" class="text-link">Read article →</a>
+    `;
+
+    // Post list (all, max 6 on home)
+    const listEl = document.getElementById('home-post-list');
+    const shown = [...POSTS].reverse().slice(0, 6);
+    document.getElementById('home-count').textContent = `${POSTS.length} article${POSTS.length !== 1 ? 's' : ''}`;
+    listEl.innerHTML = shown.map(p => `
+      <div class="post-item">
+        <div class="post-item-left">
+          <div class="post-item-tags">${p.tags.map(t => `<span class="tag" style="cursor:default;">${t}</span>`).join('')}</div>
+          <div class="post-item-title"><a href="${p.file}">${p.title}</a></div>
+          <div class="post-item-excerpt">${p.excerpt}</div>
+          <div class="post-item-meta"><span>${p.date}</span><span>${p.readTime} read</span></div>
+        </div>
+        <div><a href="${p.file}" class="read-arrow" title="Read">→</a></div>
+      </div>
+    `).join('');
+
+    // Sidebar
+    document.getElementById('home-sidebar').innerHTML = `
+      <div class="sidebar-section sidebar-about">
+        <span class="sidebar-heading">About this blog</span>
+        <p>Translations, reflections and Islamic resources. Written with care, grounded in scholarship.</p>
+        <a href="about.html">Read more →</a>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-heading">Topics</span>
+        <div class="sidebar-tag-list">
+          ${TAGS.map(t => `<a href="blog.html?tag=${t}" class="tag">${t}</a>`).join('')}
+        </div>
+      </div>
+    `;
+  </script>
 </body>
 </html>
